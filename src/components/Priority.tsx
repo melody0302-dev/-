@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
-import { PriorityRule } from '../types';
-import { Zap, Plus, Trash2, Edit3, Clock, User, ShieldCheck } from 'lucide-react';
+import { QueueRule, GPUModel } from '../types';
+import { Zap, Plus, Trash2, Edit3, User, ShieldCheck, Cpu, Box, Clock } from 'lucide-react';
 
 interface PriorityProps {
-  rules: PriorityRule[];
-  onAdd: (rule: Omit<PriorityRule, 'id'>) => void;
+  rules: QueueRule[];
+  models: GPUModel[];
+  onAdd: (rule: Omit<QueueRule, 'id'>) => void;
   onDelete: (id: string) => void;
 }
 
-export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) => {
+export const Priority: React.FC<PriorityProps> = ({ rules, models, onAdd, onDelete }) => {
   const [showAdd, setShowAdd] = useState(false);
-  const [newRule, setNewRule] = useState<Omit<PriorityRule, 'id'>>({
+  const [newRule, setNewRule] = useState<Omit<QueueRule, 'id' | 'modelName'>>({
     queueName: '',
-    effectiveUser: '',
-    priority: 'P1',
-    effectiveTime: new Date().toISOString().slice(0, 16).replace('T', ' '),
-    operator: 'sunxiaodong'
+    modelId: models[0]?.id || '',
+    maxReplicas: 10,
+    maxCardHours: 5000,
+    operator: 'admin_melody'
   });
-
-  const getPriorityColor = (priority: string) => {
-    switch(priority) {
-      case 'P0': return 'text-red-400 bg-red-400/10 border-red-400/20';
-      case 'P1': return 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-      case 'P2': return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
-      default: return 'text-slate-400 bg-slate-400/10 border-slate-400/20';
-    }
-  };
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-2xl font-bold text-white tracking-tight">优先级管理</h3>
-          <p className="text-slate-400 text-sm">以队列粒度精细化控制算力获取优先级</p>
+          <h3 className="text-2xl font-bold text-white tracking-tight">队列管理</h3>
+          <p className="text-slate-400 text-sm">以队列粒度精细化调控算力使用上限</p>
         </div>
         <button 
           onClick={() => setShowAdd(true)}
@@ -49,9 +41,9 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
             <thead>
               <tr className="bg-white/5 border-b border-white/10">
                 <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">队列名称</th>
-                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">生效人</th>
-                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">优先级</th>
-                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">生效时间</th>
+                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">型号</th>
+                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">最大副本数</th>
+                <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">最大卡时数</th>
                 <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest">操作人</th>
                 <th className="px-6 py-5 text-[10px] font-bold text-slate-500 uppercase tracking-widest text-right">操作</th>
               </tr>
@@ -69,19 +61,20 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2 text-slate-300">
-                      <User size={14} className="text-slate-500" />
-                      <span className="text-sm">{rule.effectiveUser}</span>
+                      <Cpu size={14} className="text-brand-secondary" />
+                      <span className="text-sm">{rule.modelName}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold border ${getPriorityColor(rule.priority)}`}>
-                      {rule.priority}
-                    </span>
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <Box size={14} className="text-slate-500" />
+                      <span className="text-sm font-mono">{rule.maxReplicas}</span>
+                    </div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <Clock size={14} />
-                      <span className="text-xs font-mono">{rule.effectiveTime}</span>
+                    <div className="flex items-center gap-2 text-brand-primary font-mono font-bold">
+                      <span>{rule.maxCardHours.toLocaleString()}</span>
+                      <span className="text-[10px] font-normal text-slate-500 uppercase">Hrs</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -117,7 +110,7 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
               <div className="p-2 rounded-lg bg-brand-primary/20 text-brand-primary">
                 <Plus size={20} />
               </div>
-              <h4 className="text-xl font-bold text-white">新增优先级配置</h4>
+              <h4 className="text-xl font-bold text-white">新增队列配置</h4>
             </div>
             
             <div className="space-y-5">
@@ -133,32 +126,36 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
               </div>
               
               <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">生效人</label>
-                <input 
-                  type="text"
-                  placeholder="例如: bjliwenjuan"
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">型号</label>
+                <select 
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-all"
-                  value={newRule.effectiveUser}
-                  onChange={(e) => setNewRule({...newRule, effectiveUser: e.target.value})}
-                />
+                  value={newRule.modelId}
+                  onChange={(e) => setNewRule({...newRule, modelId: e.target.value})}
+                >
+                  {models.map(m => (
+                    <option key={m.id} value={m.id} className="bg-bg-dark">{m.name}</option>
+                  ))}
+                </select>
               </div>
 
-              <div>
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">优先级</label>
-                <div className="grid grid-cols-3 gap-3">
-                  {(['P0', 'P1', 'P2'] as const).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => setNewRule({...newRule, priority: p})}
-                      className={`py-2 rounded-lg text-xs font-bold border transition-all ${
-                        newRule.priority === p 
-                          ? 'bg-brand-primary border-brand-primary text-black' 
-                          : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10'
-                      }`}
-                    >
-                      {p}
-                    </button>
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">最大副本数</label>
+                  <input 
+                    type="number"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-all font-mono"
+                    value={newRule.maxReplicas}
+                    onChange={(e) => setNewRule({...newRule, maxReplicas: parseInt(e.target.value)})}
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">最大卡时数</label>
+                  <input 
+                    type="number"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-all font-mono"
+                    value={newRule.maxCardHours}
+                    onChange={(e) => setNewRule({...newRule, maxCardHours: parseInt(e.target.value)})}
+                  />
                 </div>
               </div>
 
@@ -166,7 +163,7 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
                 <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">操作人</label>
                 <input 
                   type="text"
-                  placeholder="例如: sunxiaodong"
+                  placeholder="例如: admin_melody"
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-primary transition-all"
                   value={newRule.operator}
                   onChange={(e) => setNewRule({...newRule, operator: e.target.value})}
@@ -183,15 +180,16 @@ export const Priority: React.FC<PriorityProps> = ({ rules, onAdd, onDelete }) =>
               </button>
               <button 
                 onClick={() => {
-                  if (!newRule.queueName || !newRule.effectiveUser) return;
-                  onAdd(newRule);
+                  if (!newRule.queueName) return;
+                  const modelName = models.find(m => m.id === newRule.modelId)?.name || 'Unknown';
+                  onAdd({ ...newRule, modelName });
                   setShowAdd(false);
                   setNewRule({
                     queueName: '',
-                    effectiveUser: '',
-                    priority: 'P1',
-                    effectiveTime: new Date().toISOString().slice(0, 16).replace('T', ' '),
-                    operator: 'sunxiaodong'
+                    modelId: models[0]?.id || '',
+                    maxReplicas: 10,
+                    maxCardHours: 5000,
+                    operator: 'admin_melody'
                   });
                 }}
                 className="flex-1 px-4 py-3 rounded-lg bg-brand-primary text-black font-bold hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-all text-sm"

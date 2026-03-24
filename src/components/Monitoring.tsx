@@ -9,13 +9,14 @@ import {
   Tooltip,
   Legend
 } from 'recharts';
-import { GPUModel, ClusterStats } from '../types';
-import { Cpu, Server, Activity, ArrowUpRight, ChevronDown } from 'lucide-react';
+import { GPUModel, ClusterStats, ElasticTask } from '../types';
+import { Cpu, Server, Activity, ArrowUpRight, ChevronDown, Waves, User, Briefcase, Clock, Tag } from 'lucide-react';
 
 const COLORS = ['#00f2ff', '#7000ff', '#ff00c8', '#00ff8c'];
 
 interface MonitoringProps {
   stats: ClusterStats;
+  tasks: ElasticTask[];
 }
 
 const BASE_HISTORY_DATA = [
@@ -28,7 +29,7 @@ const BASE_HISTORY_DATA = [
   { time: '23:59', used: 2400, total: 8200 },
 ];
 
-export const Monitoring: React.FC<MonitoringProps> = ({ stats }) => {
+export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
   const [selectedModelId, setSelectedModelId] = useState<string | 'all'>('all');
 
   const chartData = useMemo(() => {
@@ -59,8 +60,15 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats }) => {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="text-2xl font-bold text-white tracking-tight">数据看板</h3>
+          <p className="text-slate-400 text-sm">全集群算力消耗实时监控与未来趋势预测</p>
+        </div>
+      </div>
+
       {/* Top Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="glass-card p-6 relative overflow-hidden group">
           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
             <Cpu size={80} />
@@ -74,6 +82,25 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats }) => {
           </div>
           <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
             <div className="h-full bg-brand-primary w-full shadow-[0_0_10px_rgba(0,242,255,0.5)]" />
+          </div>
+        </div>
+
+        <div className="glass-card p-6 relative overflow-hidden group border-brand-primary/20">
+          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+            <Waves size={80} />
+          </div>
+          <p className="text-slate-400 text-sm font-medium mb-1">潮汐卡时</p>
+          <div className="flex items-end gap-2">
+            <h3 className="text-3xl font-bold text-brand-primary">{stats.tidalCardHours.toLocaleString()}</h3>
+            <span className="text-brand-primary text-xs font-mono mb-1.5">
+              {(stats.tidalCardHours / stats.totalCardHours * 100).toFixed(1)}% 占比
+            </span>
+          </div>
+          <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-brand-primary shadow-[0_0_10px_rgba(0,242,255,0.5)]" 
+              style={{ width: `${(stats.tidalCardHours / stats.totalCardHours * 100)}%` }}
+            />
           </div>
         </div>
 
@@ -248,6 +275,78 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats }) => {
                             style={{ width: `${model.guaranteeRate}%` }}
                           />
                         </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="glass-card p-6">
+          <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-brand-primary" />
+            弹性任务明细
+          </h4>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">任务名称</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">所属人</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">部门名称</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">任务类型</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">卡型号</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">消费卡时数</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">开始时间</th>
+                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest">结束时间</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {tasks.map((task) => (
+                  <tr key={task.id} className="group hover:bg-white/5 transition-colors">
+                    <td className="py-4">
+                      <span className="text-sm font-medium text-white font-mono">{task.taskName}</span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2">
+                        <User size={12} className="text-slate-500" />
+                        <span className="text-sm text-slate-300">{task.owner}</span>
+                      </div>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2">
+                        <Briefcase size={12} className="text-slate-500" />
+                        <span className="text-sm text-slate-300">{task.department}</span>
+                      </div>
+                    </td>
+                    <td className="py-4">
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        task.taskType === 'Training' ? 'bg-brand-primary/10 text-brand-primary' : 'bg-brand-secondary/10 text-brand-secondary'
+                      }`}>
+                        {task.taskType}
+                      </span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2">
+                        <Tag size={12} className="text-slate-500" />
+                        <span className="text-sm text-slate-300">{task.modelName}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 text-right">
+                      <span className="text-sm text-brand-primary font-mono font-bold">{task.consumedCardHours.toLocaleString()}</span>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2 text-slate-500">
+                        <Clock size={12} />
+                        <span className="text-xs">{task.startTime}</span>
+                      </div>
+                    </td>
+                    <td className="py-4">
+                      <div className="flex items-center gap-2 text-slate-500">
+                        <Clock size={12} />
+                        <span className="text-xs">{task.endTime}</span>
                       </div>
                     </td>
                   </tr>

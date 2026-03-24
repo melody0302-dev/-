@@ -13,14 +13,16 @@ export interface GPUModel {
   reservedCardHours: number;
   consumedCardHours: number;
   guaranteeRate: number;
+  enabledClusters: string; // e.g. "dt02;dt"
 }
 
-export interface PriorityRule {
+export interface QueueRule {
   id: string;
   queueName: string;
-  effectiveUser: string;
-  priority: 'P0' | 'P1' | 'P2';
-  effectiveTime: string;
+  modelId: string;
+  modelName: string;
+  maxReplicas: number;
+  maxCardHours: number;
   operator: string;
 }
 
@@ -40,11 +42,26 @@ export interface Reservation {
   endTime: string;
   cardHours: number;
   status: 'active' | 'expired' | 'pending';
+  nature: 'periodic' | 'non-periodic';
+  periodType?: 'daily';
 }
 
 export interface ClusterStats {
   totalCardHours: number;
   usedCardHours: number;
   availableCardHours: number;
+  tidalCardHours: number;
   models: GPUModel[];
+}
+
+export interface ElasticTask {
+  id: string;
+  taskName: string;
+  owner: string;
+  department: string;
+  taskType: string;
+  modelName: string;
+  consumedCardHours: number;
+  startTime: string;
+  endTime: string;
 }

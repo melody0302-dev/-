@@ -23,10 +23,10 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { id: 'dashboard', label: '实时监控', icon: LayoutDashboard },
-  { id: 'admission', label: '型号准入', icon: ShieldCheck },
-  { id: 'priority', label: '优先级管理', icon: Zap },
+  { id: 'dashboard', label: '数据看板', icon: LayoutDashboard },
+  { id: 'priority', label: '队列管理', icon: Zap },
   { id: 'reservation', label: '卡时预留', icon: CalendarDays },
+  { id: 'admission', label: '型号准入', icon: ShieldCheck },
   { id: 'kill-config', label: '查杀配置', icon: Settings2 },
 ];
 
@@ -39,7 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
         </div>
         <div>
           <h1 className="font-bold text-lg tracking-tight text-white">弹性算力运营系统</h1>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">9N-Computing power</p>
+          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">9N-COMPUTING POWER</p>
         </div>
       </div>
 
@@ -68,17 +68,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       </nav>
 
       <div className="p-4 border-t border-white/10">
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-brand-secondary/20 to-transparent border border-brand-secondary/20 mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Activity className="w-4 h-4 text-brand-secondary" />
-            <span className="text-xs font-semibold text-slate-300">集群健康度</span>
-          </div>
-          <div className="h-1.5 w-full bg-black/40 rounded-full overflow-hidden">
-            <div className="h-full w-[94%] bg-gradient-to-r from-brand-secondary to-brand-primary" />
-          </div>
-          <p className="text-[10px] text-slate-500 mt-2">系统运行正常，当前负载 82%</p>
-        </div>
-        
         <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-400 transition-colors">
           <LogOut className="w-5 h-5" />
           <span className="font-medium">退出系统</span>

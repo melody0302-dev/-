@@ -111,9 +111,17 @@ export const Admission: React.FC<AdmissionProps> = ({ models, onUpdate }) => {
                 </div>
               </div>
 
-              <div className="flex justify-between text-sm pt-2">
-                <span className="text-slate-400">集群总量</span>
-                <span className="text-slate-200 font-mono">{model.totalCards} Pcs</span>
+              <div className="flex flex-col gap-1 pt-2">
+                <label className="text-[10px] text-slate-500 uppercase tracking-widest">开启集群</label>
+                <div className="flex items-center gap-2">
+                  <input 
+                    type="text"
+                    value={model.enabledClusters}
+                    onChange={(e) => onUpdate(model.id, { enabledClusters: e.target.value })}
+                    className="flex-1 bg-black/40 border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none focus:border-brand-primary transition-all font-mono"
+                  />
+                  <span className="text-[10px] text-slate-500 uppercase">cluster</span>
+                </div>
               </div>
             </div>
 
