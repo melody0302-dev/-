@@ -7,8 +7,8 @@ export interface GPUModel {
   isAdmitted: boolean;
   trainingEnabled: boolean;
   inferenceEnabled: boolean;
-  trainingLimit: number;
-  inferenceLimit: number;
+  trainingLimit: number; // percentage (0-100)
+  inferenceLimit: number; // percentage (0-100)
   predicted7dCardHours: number;
   reservedCardHours: number;
   consumedCardHours: number;

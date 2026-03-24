@@ -86,28 +86,38 @@ export const Admission: React.FC<AdmissionProps> = ({ models, onUpdate }) => {
             <div className="space-y-3 mb-6">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-[10px] text-slate-500 uppercase tracking-widest">训练限额 (Hrs)</label>
-                  <input 
-                    type="number"
-                    disabled={!model.trainingEnabled}
-                    value={model.trainingLimit}
-                    onChange={(e) => onUpdate(model.id, { trainingLimit: parseInt(e.target.value) || 0 })}
-                    className={`w-full bg-black/40 border rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none transition-all ${
-                      model.trainingEnabled ? 'border-brand-primary/30 focus:border-brand-primary' : 'border-white/5 opacity-50'
-                    }`}
-                  />
+                  <label className="text-[10px] text-slate-500 uppercase tracking-widest">训练限额 (%)</label>
+                  <div className="relative">
+                    <input 
+                      type="number"
+                      min="0"
+                      max="100"
+                      disabled={!model.trainingEnabled}
+                      value={model.trainingLimit}
+                      onChange={(e) => onUpdate(model.id, { trainingLimit: Math.min(100, Math.max(0, parseInt(e.target.value) || 0)) })}
+                      className={`w-full bg-black/40 border rounded-lg pl-3 pr-8 py-1.5 text-sm text-white focus:outline-none transition-all ${
+                        model.trainingEnabled ? 'border-brand-primary/30 focus:border-brand-primary' : 'border-white/5 opacity-50'
+                      }`}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500">%</span>
+                  </div>
                 </div>
                 <div className="space-y-1">
-                  <label className="text-[10px] text-slate-500 uppercase tracking-widest">推理限额 (Hrs)</label>
-                  <input 
-                    type="number"
-                    disabled={!model.inferenceEnabled}
-                    value={model.inferenceLimit}
-                    onChange={(e) => onUpdate(model.id, { inferenceLimit: parseInt(e.target.value) || 0 })}
-                    className={`w-full bg-black/40 border rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none transition-all ${
-                      model.inferenceEnabled ? 'border-brand-secondary/30 focus:border-brand-secondary' : 'border-white/5 opacity-50'
-                    }`}
-                  />
+                  <label className="text-[10px] text-slate-500 uppercase tracking-widest">推理限额 (%)</label>
+                  <div className="relative">
+                    <input 
+                      type="number"
+                      min="0"
+                      max="100"
+                      disabled={!model.inferenceEnabled}
+                      value={model.inferenceLimit}
+                      onChange={(e) => onUpdate(model.id, { inferenceLimit: Math.min(100, Math.max(0, parseInt(e.target.value) || 0)) })}
+                      className={`w-full bg-black/40 border rounded-lg pl-3 pr-8 py-1.5 text-sm text-white focus:outline-none transition-all ${
+                        model.inferenceEnabled ? 'border-brand-secondary/30 focus:border-brand-secondary' : 'border-white/5 opacity-50'
+                      }`}
+                    />
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500">%</span>
+                  </div>
                 </div>
               </div>
 
@@ -128,7 +138,7 @@ export const Admission: React.FC<AdmissionProps> = ({ models, onUpdate }) => {
             <div className="mt-4 pt-4 border-t border-white/5">
               <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-2">策略说明</p>
               <p className="text-xs text-slate-400 leading-relaxed">
-                该型号算力卡已进入弹性池。当前配置：{model.trainingEnabled ? '支持离线训练' : '禁止训练'}，{model.inferenceEnabled ? '支持离线推理' : '禁止推理'}。
+                该型号算力卡已进入弹性池。当前配置：{model.trainingEnabled ? `训练限额 ${model.trainingLimit}%` : '禁止训练'}，{model.inferenceEnabled ? `推理限额 ${model.inferenceLimit}%` : '禁止推理'}。
               </p>
             </div>
           </motion.div>
