@@ -24,11 +24,11 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <span className="px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase flex items-center gap-1"><CheckCircle2 size={10} /> 生效中</span>;
+        return <span className="px-2 py-1 rounded-md bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase flex items-center gap-1 border border-emerald-100"><CheckCircle2 size={10} /> 生效中</span>;
       case 'pending':
-        return <span className="px-2 py-1 rounded-md bg-amber-500/10 text-amber-400 text-[10px] font-bold uppercase flex items-center gap-1"><Clock size={10} /> 待生效</span>;
+        return <span className="px-2 py-1 rounded-md bg-amber-50 text-amber-600 text-[10px] font-bold uppercase flex items-center gap-1 border border-amber-100"><Clock size={10} /> 待生效</span>;
       case 'expired':
-        return <span className="px-2 py-1 rounded-md bg-slate-500/10 text-slate-400 text-[10px] font-bold uppercase flex items-center gap-1"><AlertCircle size={10} /> 已过期</span>;
+        return <span className="px-2 py-1 rounded-md bg-slate-50 text-slate-500 text-[10px] font-bold uppercase flex items-center gap-1 border border-slate-100"><AlertCircle size={10} /> 已过期</span>;
       default:
         return null;
     }
@@ -38,12 +38,12 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-2xl font-bold text-white">卡时预留配置</h3>
-          <p className="text-slate-400 text-sm">针对高优任务或特定部门进行弹性队列的资源预留</p>
+          <h3 className="text-xl font-bold text-slate-900">卡时预留配置</h3>
+          <p className="text-slate-500 text-sm">针对高优任务或特定部门进行弹性队列的资源预留</p>
         </div>
         <button 
           onClick={() => setShowAdd(true)}
-          className="glow-button flex items-center gap-2"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded-lg flex items-center gap-2 transition-all shadow-sm"
         >
           <Plus size={18} />
           创建预留
@@ -52,7 +52,7 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
 
       <div className="grid grid-cols-1 gap-4">
         {reservations.length === 0 ? (
-          <div className="glass-card p-12 flex flex-col items-center justify-center text-slate-500 border-dashed border-2">
+          <div className="bg-white p-12 flex flex-col items-center justify-center text-slate-400 border-dashed border-2 border-slate-200 rounded-2xl">
             <Calendar size={48} className="mb-4 opacity-20" />
             <p>暂无活跃的卡时预留配置</p>
           </div>
@@ -62,23 +62,32 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
               key={res.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-black/40 border border-white/5 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 group relative hover:border-white/10 transition-all"
+              className="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-8 group relative hover:border-blue-200 hover:shadow-md transition-all"
             >
-              <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-8 w-full">
+              <div className="flex-1 grid grid-cols-2 md:grid-cols-6 gap-8 w-full">
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em]">队列名称</p>
-                  <div className="flex items-center gap-2 text-white font-bold text-lg leading-tight">
-                    <div className="w-1 h-1 rounded-full bg-brand-primary" />
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">队列名称</p>
+                  <div className="flex items-center gap-2 text-slate-900 font-bold text-lg leading-tight">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
                     {res.queueName}
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em]">预留性质</p>
-                  <div className="flex items-center gap-2 text-slate-200">
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">集群</p>
+                  <div className="flex items-center gap-2 text-slate-700">
+                    <Layers size={16} className="text-blue-500" />
+                    <span className="text-sm font-medium">
+                      {models.find(m => m.id === res.modelId)?.clusterName || '-'}
+                    </span>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">预留性质</p>
+                  <div className="flex items-center gap-2 text-slate-700">
                     {res.nature === 'periodic' ? (
-                      <Repeat size={16} className="text-brand-secondary" />
+                      <Repeat size={16} className="text-blue-500" />
                     ) : (
-                      <Hash size={16} className="text-slate-500" />
+                      <Hash size={16} className="text-slate-400" />
                     )}
                     <span className="text-sm font-medium">
                       {res.nature === 'periodic' ? `周期预留 (${res.periodType === 'daily' ? '按天' : ''})` : '非周期预留'}
@@ -86,32 +95,32 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em]">预留型号</p>
-                  <div className="flex items-center gap-2 text-slate-200">
-                    <Cpu size={16} className="text-brand-secondary" />
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">预留型号</p>
+                  <div className="flex items-center gap-2 text-slate-700">
+                    <Cpu size={16} className="text-blue-500" />
                     <span className="text-sm font-medium">{res.modelName}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em]">预留卡时量</p>
-                  <div className="text-brand-primary font-mono font-bold text-2xl flex items-baseline gap-1">
-                    {res.cardHours.toLocaleString()} <span className="text-xs font-normal text-slate-500">Hrs</span>
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">预留卡时量</p>
+                  <div className="text-blue-600 font-mono font-bold text-2xl flex items-baseline gap-1">
+                    {res.cardHours.toLocaleString()} <span className="text-xs font-normal text-slate-400">Hrs</span>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-[10px] text-slate-500 uppercase tracking-[0.2em]">预留周期</p>
-                  <div className="text-xs text-slate-400 flex flex-col gap-1 leading-relaxed">
+                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em] font-bold">预留周期</p>
+                  <div className="text-xs text-slate-500 flex flex-col gap-1 leading-relaxed font-medium">
                     <span>起: {res.startTime}</span>
                     <span>止: {res.endTime}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-white/5 pt-6 md:pt-0">
+              <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end border-t md:border-t-0 border-slate-100 pt-6 md:pt-0">
                 {getStatusBadge(res.status)}
                 <button 
                   onClick={() => onDelete(res.id)}
-                  className="p-2.5 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all"
+                  className="p-2.5 hover:bg-red-50 rounded-xl text-slate-400 hover:text-red-500 transition-all"
                 >
                   <Trash2 size={20} />
                 </button>
@@ -122,25 +131,25 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
       </div>
 
       {showAdd && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="glass-card w-full max-w-lg p-8 animate-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto">
-            <h4 className="text-xl font-bold text-white mb-6">创建卡时预留</h4>
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white w-full max-w-lg p-8 animate-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-200 shadow-2xl">
+            <h4 className="text-xl font-bold text-slate-900 mb-6">创建卡时预留</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">队列名称</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">队列名称</label>
                 <input 
                   type="text"
                   placeholder="例如: A部门-高优训练队列"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.queueName}
                   onChange={(e) => setNewRes({...newRes, queueName: e.target.value})}
                 />
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">预留性质</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">预留性质</label>
                 <select 
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.nature}
                   onChange={(e) => {
                     const nature = e.target.value as 'periodic' | 'non-periodic';
@@ -158,9 +167,9 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
 
               {newRes.nature === 'periodic' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">周期类型</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">周期类型</label>
                   <select 
-                    className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                    className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                     value={newRes.periodType}
                     onChange={(e) => setNewRes({...newRes, periodType: e.target.value as 'daily'})}
                   >
@@ -170,9 +179,9 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
               )}
 
               <div className={newRes.nature === 'periodic' ? 'col-span-1' : 'col-span-1'}>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">预留型号</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">预留型号</label>
                 <select 
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.modelId}
                   onChange={(e) => setNewRes({...newRes, modelId: e.target.value})}
                 >
@@ -183,28 +192,28 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">预留卡时量 (Hrs)</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">预留卡时量 (Hrs)</label>
                 <input 
                   type="number"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.cardHours}
                   onChange={(e) => setNewRes({...newRes, cardHours: parseInt(e.target.value)})}
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">开始时间</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">开始时间</label>
                 <input 
                   type="datetime-local"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.startTime}
                   onChange={(e) => setNewRes({...newRes, startTime: e.target.value})}
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">结束时间</label>
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 tracking-widest">结束时间</label>
                 <input 
                   type="datetime-local"
-                  className="w-full bg-black/40 border border-white/10 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-primary transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-colors"
                   value={newRes.endTime}
                   onChange={(e) => setNewRes({...newRes, endTime: e.target.value})}
                 />
@@ -213,7 +222,7 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
             <div className="flex gap-3 mt-8">
               <button 
                 onClick={() => setShowAdd(false)}
-                className="flex-1 px-4 py-2.5 rounded-lg border border-white/10 text-slate-400 hover:bg-white/5 transition-colors"
+                className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition-colors font-medium"
               >
                 取消
               </button>
@@ -230,7 +239,7 @@ export const ReservationView: React.FC<ReservationProps> = ({ reservations, mode
                     nature: 'non-periodic'
                   });
                 }}
-                className="flex-1 px-4 py-2.5 rounded-lg bg-brand-primary text-black font-bold hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-all"
+                className="flex-1 px-4 py-2.5 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-sm"
               >
                 确认预留
               </button>

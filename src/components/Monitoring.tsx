@@ -12,7 +12,7 @@ import {
 import { GPUModel, ClusterStats, ElasticTask } from '../types';
 import { Cpu, Server, Activity, ArrowUpRight, ChevronDown, Waves, User, Briefcase, Clock, Tag } from 'lucide-react';
 
-const COLORS = ['#00f2ff', '#7000ff', '#ff00c8', '#00ff8c'];
+const COLORS = ['#1677ff', '#ff4d4f', '#3b82f6', '#10b981'];
 
 interface MonitoringProps {
   stats: ClusterStats;
@@ -60,93 +60,84 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-2xl font-bold text-white tracking-tight">数据看板</h3>
-          <p className="text-slate-400 text-sm">全集群算力消耗实时监控与未来趋势预测</p>
-        </div>
-      </div>
-
-      {/* Top Stats */}
+      {/* Top Stats - Redesigned to match image cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="glass-card p-6 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Cpu size={80} />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-4 text-slate-800 font-bold">
+            <Cpu size={18} className="text-blue-500" />
+            <span>未来7天预测总卡时</span>
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">未来7天预测总卡时</p>
-          <div className="flex items-end gap-2">
-            <h3 className="text-3xl font-bold text-white">{stats.totalCardHours.toLocaleString()}</h3>
-            <span className="text-brand-primary text-xs font-mono mb-1.5 flex items-center">
-              <ArrowUpRight size={12} /> +12%
-            </span>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-3xl font-bold text-slate-900">{stats.totalCardHours.toLocaleString()}</h3>
+            <span className="text-emerald-500 text-xs font-bold">+12%</span>
           </div>
-          <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full bg-brand-primary w-full shadow-[0_0_10px_rgba(0,242,255,0.5)]" />
+          <div className="mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div className="h-full bg-blue-500 w-full" />
           </div>
         </div>
 
-        <div className="glass-card p-6 relative overflow-hidden group border-brand-primary/20">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Waves size={80} />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-4 text-slate-800 font-bold">
+            <Waves size={18} className="text-blue-500" />
+            <span>潮汐卡时</span>
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">潮汐卡时</p>
-          <div className="flex items-end gap-2">
-            <h3 className="text-3xl font-bold text-brand-primary">{stats.tidalCardHours.toLocaleString()}</h3>
-            <span className="text-brand-primary text-xs font-mono mb-1.5">
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-3xl font-bold text-slate-900">{stats.tidalCardHours.toLocaleString()}</h3>
+            <span className="text-slate-500 text-xs">
               {(stats.tidalCardHours / stats.totalCardHours * 100).toFixed(1)}% 占比
             </span>
           </div>
-          <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+          <div className="mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-brand-primary shadow-[0_0_10px_rgba(0,242,255,0.5)]" 
+              className="h-full bg-blue-500" 
               style={{ width: `${(stats.tidalCardHours / stats.totalCardHours * 100)}%` }}
             />
           </div>
         </div>
 
-        <div className="glass-card p-6 relative overflow-hidden group border-brand-secondary/20">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Activity size={80} />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-4 text-slate-800 font-bold">
+            <Activity size={18} className="text-blue-500" />
+            <span>已占用卡时</span>
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">已占用卡时</p>
-          <div className="flex items-end gap-2">
-            <h3 className="text-3xl font-bold text-white">{stats.usedCardHours.toLocaleString()}</h3>
-            <span className="text-brand-secondary text-xs font-mono mb-1.5">
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-3xl font-bold text-slate-900">{stats.usedCardHours.toLocaleString()}</h3>
+            <span className="text-slate-500 text-xs">
               {(stats.usedCardHours / stats.totalCardHours * 100).toFixed(1)}% 负载
             </span>
           </div>
-          <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+          <div className="mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-brand-secondary shadow-[0_0_10px_rgba(112,0,255,0.5)]" 
+              className="h-full bg-blue-500" 
               style={{ width: `${(stats.usedCardHours / stats.totalCardHours * 100)}%` }}
             />
           </div>
         </div>
 
-        <div className="glass-card p-6 relative overflow-hidden group border-emerald-500/20">
-          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-            <Server size={80} />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-2 mb-4 text-slate-800 font-bold">
+            <Server size={18} className="text-blue-500" />
+            <span>可用空闲卡时</span>
           </div>
-          <p className="text-slate-400 text-sm font-medium mb-1">可用空闲卡时</p>
-          <div className="flex items-end gap-2">
-            <h3 className="text-3xl font-bold text-emerald-400">{stats.availableCardHours.toLocaleString()}</h3>
-            <span className="text-emerald-500 text-xs font-mono mb-1.5">实时可用</span>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-3xl font-bold text-slate-900">{stats.availableCardHours.toLocaleString()}</h3>
+            <span className="text-emerald-500 text-xs font-bold">实时可用</span>
           </div>
-          <div className="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+          <div className="mt-4 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" 
+              className="h-full bg-emerald-500" 
               style={{ width: `${(stats.availableCardHours / stats.totalCardHours * 100)}%` }}
             />
           </div>
         </div>
       </div>
 
-      {/* Charts */}
+      {/* Charts and Tables */}
       <div className="space-y-6">
-        <div className="glass-card p-6">
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h4 className="text-lg font-semibold text-white flex items-center gap-2">
-              <Activity className="w-5 h-5 text-brand-primary" />
+            <h4 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <Activity className="w-5 h-5 text-blue-500" />
               算力占用趋势 (24h)
             </h4>
             
@@ -154,14 +145,14 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
               <select 
                 value={selectedModelId}
                 onChange={(e) => setSelectedModelId(e.target.value)}
-                className="appearance-none bg-white/5 border border-white/10 rounded-lg px-4 py-2 pr-10 text-sm text-slate-300 focus:outline-none focus:border-brand-primary/50 cursor-pointer hover:bg-white/10 transition-all"
+                className="appearance-none bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 pr-10 text-sm text-slate-700 focus:outline-none focus:border-blue-500 cursor-pointer hover:bg-slate-100 transition-all"
               >
                 <option value="all">全部型号</option>
                 {stats.models.map(m => (
                   <option key={m.id} value={m.id}>{m.name}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
             </div>
           </div>
 
@@ -170,45 +161,45 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
               <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorUsed" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#00f2ff" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#00f2ff" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#1677ff" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#1677ff" stopOpacity={0}/>
                   </linearGradient>
                   <linearGradient id="colorIdle" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.2}/>
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                 <XAxis 
                   dataKey="time" 
-                  stroke="#94a3b8" 
+                  stroke="#8c8c8c" 
                   fontSize={12} 
                   tickLine={false} 
                   axisLine={false} 
                 />
                 <YAxis 
-                  stroke="#94a3b8" 
+                  stroke="#8c8c8c" 
                   fontSize={12} 
                   tickLine={false} 
                   axisLine={false} 
                   tickFormatter={(v) => `${(v/1000).toFixed(1)}k`}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #ffffff20', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #f0f0f0', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                 />
                 <Legend 
                   verticalAlign="top" 
                   align="right" 
                   height={36}
                   iconType="circle"
-                  formatter={(value) => <span className="text-xs text-slate-400 font-medium">{value}</span>}
+                  formatter={(value) => <span className="text-xs text-slate-600 font-medium">{value}</span>}
                 />
                 <Area 
                   type="monotone" 
                   dataKey="used" 
                   name="被占用卡时"
-                  stroke="#00f2ff" 
-                  fillOpacity={0.1} 
+                  stroke="#1677ff" 
+                  fillOpacity={1} 
                   fill="url(#colorUsed)" 
                   strokeWidth={2}
                 />
@@ -217,7 +208,7 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
                   dataKey="idle" 
                   name="闲置卡时"
                   stroke="#10b981" 
-                  fillOpacity={0.1} 
+                  fillOpacity={1} 
                   fill="url(#colorIdle)" 
                   strokeWidth={2}
                 />
@@ -226,52 +217,52 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
           </div>
         </div>
 
-        <div className="glass-card p-6">
-          <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-brand-secondary" />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h4 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <Cpu className="w-5 h-5 text-blue-500" />
             型号分布明细
           </h4>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">型号</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">集群名称</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">7天预测卡时</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">已预约卡时</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">已消费卡时</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">卡时保障率</th>
+                <tr className="border-b border-slate-100">
+                  <th className="pb-4 text-xs text-slate-500 font-bold">型号</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">集群名称</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold text-right">7天预测卡时</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold text-right">已预约卡时</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold text-right">已消费卡时</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold text-right">卡时保障率</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-50">
                 {stats.models.map((model) => (
-                  <tr key={model.id} className="group hover:bg-white/5 transition-colors">
+                  <tr key={model.id} className="group hover:bg-slate-50 transition-colors">
                     <td className="py-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
-                          <Cpu size={14} className="text-brand-primary" />
+                        <div className="w-8 h-8 rounded bg-blue-50 flex items-center justify-center">
+                          <Cpu size={14} className="text-blue-500" />
                         </div>
-                        <span className="text-sm font-medium text-white">{model.name}</span>
+                        <span className="text-sm font-semibold text-slate-800">{model.name}</span>
                       </div>
                     </td>
                     <td className="py-4">
-                      <span className="text-xs text-slate-400 font-mono">{model.clusterName}</span>
+                      <span className="text-xs text-slate-500">{model.clusterName}</span>
                     </td>
                     <td className="py-4 text-right">
-                      <span className="text-sm text-slate-200 font-mono">{model.predicted7dCardHours.toLocaleString()}</span>
+                      <span className="text-sm text-slate-700 font-mono">{model.predicted7dCardHours.toLocaleString()}</span>
                     </td>
                     <td className="py-4 text-right">
-                      <span className="text-sm text-slate-200 font-mono">{model.reservedCardHours.toLocaleString()}</span>
+                      <span className="text-sm text-slate-700 font-mono">{model.reservedCardHours.toLocaleString()}</span>
                     </td>
                     <td className="py-4 text-right">
-                      <span className="text-sm text-slate-200 font-mono">{model.consumedCardHours.toLocaleString()}</span>
+                      <span className="text-sm text-slate-700 font-mono">{model.consumedCardHours.toLocaleString()}</span>
                     </td>
                     <td className="py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="text-sm font-bold text-brand-primary">{model.guaranteeRate}%</span>
-                        <div className="w-16 h-1 bg-white/10 rounded-full overflow-hidden">
+                        <span className="text-sm font-bold text-blue-600">{model.guaranteeRate}%</span>
+                        <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
                           <div 
-                            className="h-full bg-brand-primary" 
+                            className="h-full bg-blue-500" 
                             style={{ width: `${model.guaranteeRate}%` }}
                           />
                         </div>
@@ -284,67 +275,67 @@ export const Monitoring: React.FC<MonitoringProps> = ({ stats, tasks }) => {
           </div>
         </div>
 
-        <div className="glass-card p-6">
-          <h4 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-brand-primary" />
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h4 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
+            <Activity className="w-5 h-5 text-blue-500" />
             弹性任务明细
           </h4>
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">任务名称</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">所属人</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">部门名称</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">任务类型</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">卡型号</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium text-right">消费卡时数</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest font-medium">开始时间</th>
-                  <th className="pb-4 text-[10px] text-slate-500 uppercase tracking-widest">结束时间</th>
+                <tr className="border-b border-slate-100">
+                  <th className="pb-4 text-xs text-slate-500 font-bold">任务名称</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">所属人</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">部门名称</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">任务类型</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">卡型号</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold text-right">消费卡时数</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">开始时间</th>
+                  <th className="pb-4 text-xs text-slate-500 font-bold">结束时间</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-slate-50">
                 {tasks.map((task) => (
-                  <tr key={task.id} className="group hover:bg-white/5 transition-colors">
+                  <tr key={task.id} className="group hover:bg-slate-50 transition-colors">
                     <td className="py-4">
-                      <span className="text-sm font-medium text-white font-mono">{task.taskName}</span>
+                      <span className="text-sm font-semibold text-slate-800">{task.taskName}</span>
                     </td>
                     <td className="py-4">
                       <div className="flex items-center gap-2">
-                        <User size={12} className="text-slate-500" />
-                        <span className="text-sm text-slate-300">{task.owner}</span>
+                        <User size={12} className="text-slate-400" />
+                        <span className="text-sm text-slate-600">{task.owner}</span>
                       </div>
                     </td>
                     <td className="py-4">
                       <div className="flex items-center gap-2">
-                        <Briefcase size={12} className="text-slate-500" />
-                        <span className="text-sm text-slate-300">{task.department}</span>
+                        <Briefcase size={12} className="text-slate-400" />
+                        <span className="text-sm text-slate-600">{task.department}</span>
                       </div>
                     </td>
                     <td className="py-4">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                        task.taskType === 'Training' ? 'bg-brand-primary/10 text-brand-primary' : 'bg-brand-secondary/10 text-brand-secondary'
+                        task.taskType === 'Training' ? 'bg-blue-50 text-blue-600' : 'bg-cyan-50 text-cyan-600'
                       }`}>
                         {task.taskType}
                       </span>
                     </td>
                     <td className="py-4">
                       <div className="flex items-center gap-2">
-                        <Tag size={12} className="text-slate-500" />
-                        <span className="text-sm text-slate-300">{task.modelName}</span>
+                        <Tag size={12} className="text-slate-400" />
+                        <span className="text-sm text-slate-600">{task.modelName}</span>
                       </div>
                     </td>
                     <td className="py-4 text-right">
-                      <span className="text-sm text-brand-primary font-mono font-bold">{task.consumedCardHours.toLocaleString()}</span>
+                      <span className="text-sm text-blue-600 font-bold">{task.consumedCardHours.toLocaleString()}</span>
                     </td>
                     <td className="py-4">
-                      <div className="flex items-center gap-2 text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Clock size={12} />
                         <span className="text-xs">{task.startTime}</span>
                       </div>
                     </td>
                     <td className="py-4">
-                      <div className="flex items-center gap-2 text-slate-500">
+                      <div className="flex items-center gap-2 text-slate-400">
                         <Clock size={12} />
                         <span className="text-xs">{task.endTime}</span>
                       </div>

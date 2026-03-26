@@ -1,5 +1,5 @@
 {
-  "name": "AetherCompute - 弹性算力运营平台",
+  "name": "弹性算力管理",
   "description": "专业级机器学习算力集群弹性资源管理与调度平台，支持实时监控、型号准入、优先级调度及自动化查杀配置。",
   "requestFramePermissions": []
 }

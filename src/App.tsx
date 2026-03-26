@@ -6,145 +6,131 @@ import { Priority } from './components/Priority';
 import { KillConfigView } from './components/KillConfig';
 import { ReservationView } from './components/Reservation';
 import { ClusterStats, GPUModel, QueueRule, KillConfig, Reservation, ElasticTask } from './types';
-import { Bell, User } from 'lucide-react';
+import { Bell, User, ChevronDown, HelpCircle, Settings, Globe, MessageSquare, Zap } from 'lucide-react';
 
 const INITIAL_MODELS: GPUModel[] = [
-  { 
-    id: '1', 
-    name: 'NVIDIA G5', 
-    clusterName: 'CLUSTER-A',
-    totalCards: 512, 
-    usedCards: 420, 
-    isAdmitted: true, 
-    trainingEnabled: true, 
-    inferenceEnabled: true, 
-    trainingLimit: 70, 
-    inferenceLimit: 30,
-    predicted7dCardHours: 85000,
-    reservedCardHours: 72000,
-    consumedCardHours: 68000,
-    guaranteeRate: 94.4,
+  {
+    id: '1',
+    name: 'NVIDIA A100',
+    clusterName: 'dt02',
+    totalCards: 1024,
+    usedCards: 842,
+    isAdmitted: true,
+    trainingEnabled: true,
+    inferenceEnabled: true,
+    trainingLimit: 80,
+    inferenceLimit: 20,
+    predicted7dCardHours: 125000,
+    reservedCardHours: 15000,
+    consumedCardHours: 82400,
+    guaranteeRate: 95,
     enabledClusters: 'dt02;dt'
   },
-  { 
-    id: '2', 
-    name: 'NVIDIA G1', 
-    clusterName: 'CLUSTER-A',
-    totalCards: 256, 
-    usedCards: 180, 
-    isAdmitted: true, 
-    trainingEnabled: true, 
-    inferenceEnabled: false, 
-    trainingLimit: 80, 
+  {
+    id: '2',
+    name: 'ASCEND910',
+    clusterName: 'dt02',
+    totalCards: 512,
+    usedCards: 120,
+    isAdmitted: true,
+    trainingEnabled: true,
+    inferenceEnabled: false,
+    trainingLimit: 100,
     inferenceLimit: 0,
-    predicted7dCardHours: 42000,
-    reservedCardHours: 35000,
-    consumedCardHours: 32000,
-    guaranteeRate: 91.4,
-    enabledClusters: 'dt01'
+    predicted7dCardHours: 45000,
+    reservedCardHours: 5000,
+    consumedCardHours: 12000,
+    guaranteeRate: 88,
+    enabledClusters: 'dt02'
   },
-  { 
-    id: '3', 
-    name: 'ASCEND910', 
-    clusterName: 'CLUSTER-B',
-    totalCards: 1024, 
-    usedCards: 300, 
-    isAdmitted: true, 
-    trainingEnabled: false, 
-    inferenceEnabled: true, 
-    trainingLimit: 0, 
-    inferenceLimit: 60,
-    predicted7dCardHours: 172000,
-    reservedCardHours: 150000,
-    consumedCardHours: 142000,
-    guaranteeRate: 94.6,
-    enabledClusters: 'npu-01'
-  },
-  { 
-    id: '4', 
-    name: 'ASCEND HC', 
-    clusterName: 'CLUSTER-C',
-    totalCards: 2048, 
-    usedCards: 1500, 
-    isAdmitted: false, 
-    trainingEnabled: false, 
-    inferenceEnabled: false, 
-    trainingLimit: 0, 
-    inferenceLimit: 0,
-    predicted7dCardHours: 344000,
-    reservedCardHours: 300000,
-    consumedCardHours: 280000,
-    guaranteeRate: 93.3,
-    enabledClusters: 'hc-01;hc-02'
-  },
+  {
+    id: '3',
+    name: 'NVIDIA V100',
+    clusterName: 'dt',
+    totalCards: 2048,
+    usedCards: 1500,
+    isAdmitted: true,
+    trainingEnabled: false,
+    inferenceEnabled: true,
+    trainingLimit: 0,
+    inferenceLimit: 100,
+    predicted7dCardHours: 85000,
+    reservedCardHours: 10000,
+    consumedCardHours: 65000,
+    guaranteeRate: 92,
+    enabledClusters: 'dt'
+  }
 ];
 
 const INITIAL_TASKS: ElasticTask[] = [
   {
     id: 't1',
-    taskName: 'llm-pretrain-v2-0323',
-    owner: 'zhangsan',
+    taskName: 'llm-pretrain-v2',
+    owner: 'melody_admin',
     department: 'AI Lab',
     taskType: 'Training',
-    modelName: 'NVIDIA G5',
-    consumedCardHours: 1250,
-    startTime: '2026-03-22 10:00',
-    endTime: '2026-03-25 18:00'
+    modelName: 'NVIDIA A100',
+    consumedCardHours: 12500,
+    startTime: '2024-03-20 10:00',
+    endTime: '2024-03-25 10:00'
   },
   {
     id: 't2',
-    taskName: 'search-rank-daily-update',
-    owner: 'lisi',
-    department: 'Search Engine',
-    taskType: 'Inference',
-    modelName: 'NVIDIA G1',
-    consumedCardHours: 450,
-    startTime: '2026-03-23 02:00',
-    endTime: '2026-03-23 14:00'
+    taskName: 'stable-diffusion-finetune',
+    owner: 'john_doe',
+    department: 'Creative AI',
+    taskType: 'Training',
+    modelName: 'NVIDIA V100',
+    consumedCardHours: 4200,
+    startTime: '2024-03-22 14:00',
+    endTime: '2024-03-24 18:00'
   },
   {
     id: 't3',
-    taskName: 'vision-foundation-model',
-    owner: 'wangwu',
-    department: 'Vision Team',
-    taskType: 'Training',
-    modelName: 'ASCEND910',
-    consumedCardHours: 3200,
-    startTime: '2026-03-20 08:00',
-    endTime: '2026-03-26 20:00'
+    taskName: 'bert-inference-service',
+    owner: 'jane_smith',
+    department: 'NLP Group',
+    taskType: 'Inference',
+    modelName: 'NVIDIA A100',
+    consumedCardHours: 850,
+    startTime: '2024-03-24 08:00',
+    endTime: '2024-03-25 08:00'
   }
 ];
 
 const INITIAL_RULES: QueueRule[] = [
-  { id: 'r1', queueName: 'elas-llm-train-01', modelId: '1', modelName: 'NVIDIA G5', maxReplicas: 10, maxCardHours: 5000, operator: 'sunxiaodong' },
-  { id: 'r2', queueName: 'elas-search-dev-02', modelId: '2', modelName: 'NVIDIA G1', maxReplicas: 5, maxCardHours: 2000, operator: 'sunxiaodong' },
-  { id: 'r3', queueName: 'elas-autodrive-test', modelId: '3', modelName: 'ASCEND910', maxReplicas: 20, maxCardHours: 10000, operator: 'admin_melody' },
+  {
+    id: 'r1',
+    queueName: 'elas-llm-train-01',
+    modelId: '1',
+    modelName: 'NVIDIA A100',
+    maxReplicas: 32,
+    maxCardHours: 50000,
+    operator: 'admin_melody'
+  },
+  {
+    id: 'r2',
+    queueName: 'elas-search-dev-02',
+    modelId: '3',
+    modelName: 'NVIDIA V100',
+    maxReplicas: 16,
+    maxCardHours: 20000,
+    operator: 'admin_melody'
+  }
 ];
 
 const INITIAL_RESERVATIONS: Reservation[] = [
-  { 
-    id: 'res1', 
-    queueName: 'elas-llm-oxygen-studiolfga', 
-    modelId: '1', 
-    modelName: 'NVIDIA A100 (80GB)', 
-    startTime: '2026-03-20 00:00', 
-    endTime: '2026-03-25 23:59', 
-    cardHours: 5000, 
-    status: 'pending',
-    nature: 'non-periodic'
-  },
-  { 
-    id: 'res2', 
-    queueName: 'elas-ea-search-up-devlfga', 
-    modelId: '2', 
-    modelName: 'NVIDIA H100', 
-    startTime: '2026-03-18 08:00', 
-    endTime: '2026-03-22 18:00', 
-    cardHours: 2400, 
+  {
+    id: 'res1',
+    queueName: 'A部门-高优训练队列',
+    modelId: '1',
+    modelName: 'NVIDIA A100',
+    startTime: '2024-03-25 00:00',
+    endTime: '2024-03-31 23:59',
+    cardHours: 15000,
     status: 'active',
-    nature: 'periodic',
-    periodType: 'daily'
-  },
+    nature: 'non-periodic'
+  }
 ];
 
 export default function App() {
@@ -171,12 +157,12 @@ export default function App() {
   // Update stats when models change
   useEffect(() => {
     const totalPredicted = models.reduce((acc, m) => acc + m.predicted7dCardHours, 0);
-    const totalUsed = models.reduce((acc, m) => acc + m.usedCards * 24, 0); // Keep mock usage for now
+    const totalUsed = models.reduce((acc, m) => acc + m.usedCards * 24, 0); 
     setStats({
       totalCardHours: totalPredicted,
       usedCardHours: totalUsed,
       availableCardHours: totalPredicted - totalUsed,
-      tidalCardHours: Math.round(totalPredicted * 0.12), // Mock tidal as 12% of total
+      tidalCardHours: Math.round(totalPredicted * 0.12),
       models: models
     });
   }, [models]);
@@ -215,59 +201,18 @@ export default function App() {
     }
   };
 
-  const getTitle = () => {
-    switch (activeTab) {
-      case 'dashboard': return '数据看板';
-      case 'admission': return '型号准入管理';
-      case 'priority': return '队列管理';
-      case 'reservation': return '卡时预留配置';
-      case 'kill-config': return '自动化查杀';
-      default: return '弹性算力运营系统';
-    }
-  };
-
   return (
-    <div className="flex min-h-screen bg-bg-dark selection:bg-brand-primary/30">
+    <div className="flex min-h-screen bg-[#f0f2f5]">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main className="flex-1 flex flex-col min-w-0">
-        {/* Header */}
-        <header className="h-20 border-b border-white/10 flex items-center justify-end px-8 bg-black/20 backdrop-blur-sm sticky top-0 z-40">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-4">
-              <button className="relative p-2 text-slate-400 hover:text-white transition-colors">
-                <Bell size={20} />
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-secondary rounded-full border-2 border-bg-dark" />
-              </button>
-              <div className="h-8 w-px bg-white/10" />
-              <button className="flex items-center gap-3 pl-2 group">
-                <div className="text-right hidden sm:block">
-                  <p className="text-sm font-semibold text-white group-hover:text-brand-primary transition-colors">Admin_Melody</p>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-tighter">Product Manager</p>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 border border-white/10 flex items-center justify-center overflow-hidden">
-                  <User className="text-slate-400" size={20} />
-                </div>
-              </button>
-            </div>
+        {/* Main Layout */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* Main Content Area */}
+          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+            {renderContent()}
           </div>
-        </header>
-
-        {/* Content Area */}
-        <div className="p-8 overflow-y-auto">
-          {renderContent()}
         </div>
-
-        {/* Footer Info */}
-        <footer className="mt-auto p-8 border-t border-white/5 flex justify-between items-center text-[10px] text-slate-600 font-mono uppercase tracking-widest">
-          <div className="flex gap-6">
-            <span>System Version: v2.4.0-stable</span>
-            <span>Last Sync: {new Date().toLocaleTimeString()}</span>
-          </div>
-          <div>
-            © 2026 弹性算力运营系统 (9N-Computing power). ALL RIGHTS RESERVED.
-          </div>
-        </footer>
       </main>
     </div>
   );

@@ -32,43 +32,37 @@ const menuItems = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <aside className="w-64 h-screen border-r border-white/10 flex flex-col bg-black/40 backdrop-blur-md sticky top-0">
+    <aside className="w-64 h-screen border-r border-slate-200 flex flex-col bg-white sticky top-0">
       <div className="p-6 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-lg shadow-brand-primary/20">
-          <Cpu className="text-white w-6 h-6" />
+        <div className="w-8 h-8 rounded bg-brand-primary flex items-center justify-center">
+          <Cpu className="text-white w-5 h-5" />
         </div>
-        <div>
-          <h1 className="font-bold text-lg tracking-tight text-white">弹性算力运营系统</h1>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-mono">9N-COMPUTING POWER</p>
-        </div>
+        <h1 className="font-bold text-xl tracking-tight text-slate-900">弹性算力管理</h1>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav className="flex-1 px-3 py-4 space-y-1">
         {menuItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={cn(
-              "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group",
+              "w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group",
               activeTab === item.id 
-                ? "bg-brand-primary/10 text-brand-primary border border-brand-primary/20 shadow-[0_0_15px_rgba(0,242,255,0.1)]" 
-                : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
+                ? "bg-brand-primary/10 text-brand-primary font-semibold" 
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
             )}
           >
             <item.icon className={cn(
-              "w-5 h-5 transition-transform duration-300 group-hover:scale-110",
-              activeTab === item.id ? "text-brand-primary" : "text-slate-500"
+              "w-5 h-5",
+              activeTab === item.id ? "text-brand-primary" : "text-slate-400 group-hover:text-slate-600"
             )} />
-            <span className="font-medium">{item.label}</span>
-            {activeTab === item.id && (
-              <div className="ml-auto w-1.5 h-1.5 rounded-full bg-brand-primary shadow-[0_0_8px_rgba(0,242,255,1)]" />
-            )}
+            <span className="text-sm">{item.label}</span>
           </button>
         ))}
       </nav>
 
-      <div className="p-4 border-t border-white/10">
-        <button className="w-full flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-red-400 transition-colors">
+      <div className="p-4 border-t border-slate-100">
+        <button className="w-full flex items-center gap-3 px-4 py-2.5 text-slate-500 hover:text-brand-primary transition-colors text-sm">
           <LogOut className="w-5 h-5" />
           <span className="font-medium">退出系统</span>
         </button>
